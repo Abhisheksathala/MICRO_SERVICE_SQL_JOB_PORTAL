@@ -1,3 +1,4 @@
+
 import type { Request, Response, NextFunction, RequestHandler } from "express";
 import { TryCatch } from "../utils/TryCatch.js";
 import ErrorHandler from "../utils/errorHandler.js";
@@ -52,8 +53,7 @@ export const forgetpassword: RequestHandler = TryCatch(async (req: Request, res:
     })
     .json({
       success: true,
-      message: "Password reset link sent successfully",
-      data: messageBody
+      message: "Password reset link sent successfully"
     })
 })
 

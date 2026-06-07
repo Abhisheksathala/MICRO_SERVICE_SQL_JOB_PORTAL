@@ -58,7 +58,7 @@ export const PublishToTopic = async (topic: string, message: any) => {
       topic: topic,
       messages: [
         {
-          value: JSON.stringify({ message })
+          value: JSON.stringify(message)
         }
       ]
     })

@@ -19,17 +19,17 @@ export const startSendMailConsumer = async () => {
     })
     console.log("Consumer connected and subscribed to topic")
     await consumer.run({
-      eachMessage: async ({ topic = "", partition = 0, message }) :Promise<void> => { 
+      eachMessage: async ({ topic = "", partition = 0, message }): Promise<void> => {
         try {
           const { to, subject, html } = JSON.parse(message.value?.toString()! || '{}')
           const transporter = nodemailer.createTransport({
-            service: "gmail", 
-            host: "smpt.gmail.com", 
+            service: "gmail",
+            host: "smpt.gmail.com",
             port: 465,
             secure: true,
             auth: {
-              user: "xyz",
-              pass: "123"
+              user: "abhisheksathala296@gmail.com",
+              pass: "qlnxqpqauxcptwoq"
             }
 
           })

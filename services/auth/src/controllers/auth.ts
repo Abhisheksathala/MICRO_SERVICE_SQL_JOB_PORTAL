@@ -85,7 +85,7 @@ export const loginuser: RequestHandler = TryCatch(async (req: Request, res: Resp
 
   //  const user = await sql`SELECT * FROM users WHERE email = ${email}`
 
-  const user = await sql`SELECT u.user_id ,u.email,u.password,u.phone_number,u.name,u.role,u.bio,u.resume,u.profile_pic,u.subscribtion,
+  const user = await sql`SELECT u.user_id ,u.email,u.password,u.phone_number,u.name,u.role,u.bio,u.resume,u.profile_pic,u.subscription,
     ARRAY_AGG(s.name) FILTER (WHERE s.name IS NOT NULL) AS skills FROM users u LEFT JOIN user_skills us ON u.user_id = us.user_id LEFT JOIN skills s ON us.skill_id = s.skill_id WHERE u.email = ${email} GROUP BY u.user_id;`
 
 
