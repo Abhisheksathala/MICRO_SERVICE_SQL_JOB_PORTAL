@@ -2,7 +2,7 @@ import { Router } from "express";
 import { v2 as cloudinary } from 'cloudinary';
 
 
-const router = Router();
+const router: Router = Router();
 
 
 router.post('/upload', async (req, res) => {

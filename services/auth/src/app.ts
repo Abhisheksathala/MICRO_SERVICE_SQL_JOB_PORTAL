@@ -1,6 +1,6 @@
 import express from 'express';
 import 'dotenv/config';
-import type {Request, Response,Express} from 'express';
+import type { Request, Response, Express } from 'express';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import helmet from 'helmet';
@@ -9,7 +9,7 @@ import { connectKafkaProducer } from './producer.js';
 
 
 
-const app:Express = express();
+const app: Express = express();
 
 app.use(express.json());
 app.use(express.static('public'));
@@ -22,10 +22,14 @@ app.use(
 );
 app.use(helmet());
 
-connectKafkaProducer()
+if (process.env.ENABLE_KAFKA === 'true') {
+  connectKafkaProducer();
+} else {
+  console.log("ℹ️ Kafka is disabled (ENABLE_KAFKA is not 'true'). Email notifications will be logged to console.");
+}
 
-app.get('/', (req:Request, res:Response) => {
-    res.send('Auth service');
+app.get('/', (req: Request, res: Response) => {
+  res.send('Auth service');
 });
 
 app.use('/api/auth', AuthRouter);
