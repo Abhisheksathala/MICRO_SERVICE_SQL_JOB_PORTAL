@@ -46,6 +46,10 @@ export const connectKafkaProducer = async (): Promise<void> => {
 
 
 export const PublishToTopic = async (topic: string, message: any) => {
+  if (process.env.ENABLE_KAFKA !== 'true') {
+    console.log(`ℹ️ [Mock Kafka Publish] Topic: "${topic}", Message:`, message);
+    return;
+  }
   try {
     if (!producer) {
       throw new Error("producer not initialized")
@@ -65,8 +69,8 @@ export const PublishToTopic = async (topic: string, message: any) => {
 }
 
 
-export const disconnectKafka = async ():Promise<void> => {
-  if(!producer) {
+export const disconnectKafka = async (): Promise<void> => {
+  if (!producer) {
     console.log("producer not initialized")
     return;
   };

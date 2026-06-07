@@ -9,7 +9,7 @@ import jwt from "jsonwebtoken"
 
 
 
-export const createToken = async (user_id: string) => {
+export const createToken = (user_id: string) => {
   return jwt.sign({ user_id }, process.env.JWT_SECRET!, { expiresIn: "15d" })
 }
 
@@ -34,10 +34,13 @@ export const registerUser: RequestHandler = TryCatch(async (req: Request, res: R
   let registerUser;
 
   if (role === 'recruiter') {
+
     const [user] = await sql`
-    INSERT INTO users (name,email,password,phone_number,role) (${name},${email},${hash},${phoneNumber},${role}) RETURNING user_id,name,email,phone_number,role,created_at`
+    INSERT INTO users (name,email,password,phone_number,role) VALUES (${name},${email},${hash},${phoneNumber},${role}) RETURNING user_id,name,email,phone_number,role,created_at`
     registerUser = user;
+
   } else if (role === 'jobseeker') {
+
     const file = req.file;
     if (!file) {
       throw new ErrorHandler("File is required", 400)
@@ -47,8 +50,9 @@ export const registerUser: RequestHandler = TryCatch(async (req: Request, res: R
       throw new ErrorHandler("Failed to buffer file", 500)
     }
     const { data } = await axios.post(`${process.env.UPLOADE_SERVICE}/api/utils/upload`, { buffer: filebuffer.content, public_id: file.originalname })
+
     const [user] = await sql`
-    INSERT INTO users (name,email,password,phone_number,role,bio,resume,resume_url,resume_public_id) (${name},${email},${hash},${phoneNumber},${role},${bio},${data.url},${data.public_id}) RETURNING user_id,name,email,phone_number,role,bio,resume_url,resume_public_id,created_at RETURNING user_id ,name,email,phone_number,role,bio,resume,created_at`
+    INSERT INTO users (name,email,password,phone_number,role,bio,resume,resume_public_id) VALUES (${name},${email},${hash},${phoneNumber},${role},${bio},${data.url},${data.public_id}) RETURNING user_id,name,email,phone_number,role,bio,resume,resume_public_id,created_at`
 
     registerUser = user;
   }

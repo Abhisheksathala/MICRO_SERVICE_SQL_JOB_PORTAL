@@ -4,9 +4,11 @@ import path from "path";
 const parser = new DataURIParser();
 
 
-const getbuffer = (file:any)=>{
+const getbuffer = (file: any) => {
   const extName = path.extname(file?.originalname).toString();
-  return parser.format(extName,file?.buffer)
+  console.log(extName, "extname")
+  console.log(file.buffer, "buffer")
+  return parser.format(extName, file?.buffer)
 }
 
 
