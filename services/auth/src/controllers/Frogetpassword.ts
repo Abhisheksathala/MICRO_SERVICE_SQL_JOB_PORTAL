@@ -6,6 +6,7 @@ import { sql } from "../db/db.js";
 import { createToken } from "./auth.js";
 import { ForgetPasswordTemplate } from "./Templets.js";
 import { PublishToTopic } from "../producer.js";
+import { redisClient } from "../index.js";
 
 
 
@@ -32,6 +33,10 @@ export const forgetpassword: RequestHandler = TryCatch(async (req: Request, res:
   const resetToken = createToken(user?.user_id);
 
   const resetLink = `${process.env.FRONTEND_URL}/reset/${resetToken}`;
+
+  await redisClient.set(`forgot:${email}`, resetToken, {
+    EX: 900
+  })
 
   const messageBody = {
     to: email,
